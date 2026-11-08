@@ -23,7 +23,8 @@ device() {
   if [[ -n "${DEVICE:-}" ]]; then echo "$DEVICE"; return; fi
   local json; json=$(mktemp)
   xcrun devicectl list devices --json-output "$json" >/dev/null
-  /usr/bin/python3 -I - "$json" <<'PY'
+  local rc=0
+  /usr/bin/python3 -I - "$json" <<'PY' || rc=$?
 import json, sys
 devs = json.load(open(sys.argv[1]))["result"]["devices"]
 phys = [d for d in devs if d.get("hardwareProperties", {}).get("reality") == "physical"
@@ -33,6 +34,7 @@ if not phys:
 print(phys[0]["hardwareProperties"]["udid"])
 PY
   rm -f "$json"
+  return $rc
 }
 
 case "${1:-}" in install|run|pull) dev=$(device) ;; esac
