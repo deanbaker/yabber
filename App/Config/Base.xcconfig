@@ -1,0 +1,4 @@
+// DEVELOPMENT_TEAM goes in Local.xcconfig (git-ignored); scripts/app.sh team <ID> writes it.
+WF_BUNDLE_ID = com.deanbaker.wisprfree
+
+#include? "Local.xcconfig"

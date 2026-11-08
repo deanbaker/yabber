@@ -1,0 +1,69 @@
+name: WisprFree
+options:
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+configFiles:
+  Debug: Config/Base.xcconfig
+  Release: Config/Base.xcconfig
+settings:
+  base:
+    CODE_SIGN_STYLE: Automatic
+    TARGETED_DEVICE_FAMILY: "1"
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1"
+    CURRENT_PROJECT_VERSION: "1"
+packages:
+  FluidAudio:
+    url: https://github.com/FluidInference/FluidAudio
+    exactVersion: 0.18.3
+targets:
+  WisprFree:
+    type: application
+    platform: iOS
+    sources: [WisprFree, Shared]
+    dependencies:
+      - package: FluidAudio
+      - target: WisprKeyboard
+        embed: true
+    entitlements:
+      path: WisprFree/WisprFree.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.deanbaker.wisprfree]
+    info:
+      path: WisprFree/Info.plist
+      properties:
+        CFBundleDisplayName: WisprFree
+        UILaunchScreen: {}
+        UIBackgroundModes: [audio]
+        NSMicrophoneUsageDescription: WisprFree listens while you dictate from its keyboard. Audio never leaves the phone.
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        CFBundleURLTypes:
+          - CFBundleURLName: $(PRODUCT_BUNDLE_IDENTIFIER)
+            CFBundleURLSchemes: [wisprfree]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(WF_BUNDLE_ID)
+  WisprKeyboard:
+    type: app-extension
+    platform: iOS
+    sources: [Keyboard, Shared]
+    entitlements:
+      path: Keyboard/WisprKeyboard.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.deanbaker.wisprfree]
+    info:
+      path: Keyboard/Info.plist
+      properties:
+        CFBundleDisplayName: WisprFree
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.keyboard-service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
+          NSExtensionAttributes:
+            IsASCIICapable: false
+            PrefersRightToLeft: false
+            PrimaryLanguage: en-US
+            RequestsOpenAccess: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(WF_BUNDLE_ID).keyboard
