@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#0B0B0D"/>
+  <defs>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFB21A"/>
+      <stop offset=".52" stop-color="#FF790D"/>
+      <stop offset="1" stop-color="#F04412"/>
+    </linearGradient>
+    <linearGradient id="fold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF8A0A"/>
+      <stop offset="1" stop-color="#E83212"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0 0)">
+    <path d="M205 270 C205 239 229 218 263 218 H355 C395 218 424 236 453 269 L548 380 L450 492 L239 307 C216 287 205 279 205 270Z" fill="url(#orange)"/>
+    <path d="M493 398 L650 247 C674 223 699 211 734 211 H811 C846 211 858 238 833 267 L589 548 C565 575 551 598 551 632 V789 C551 826 529 849 492 849 H438 C401 849 379 826 379 789 V621 C379 583 394 555 421 527 L493 398Z" fill="url(#orange)"/>
+    <path d="M493 398 L589 548 C565 575 551 598 551 632 V789 C551 826 529 849 492 849 H438 C401 849 379 826 379 789 V621 C379 583 394 555 421 527Z" fill="url(#fold)" opacity=".38"/>
+    <g fill="url(#orange)">
+      <rect x="735" y="447" width="58" height="104" rx="29"/>
+      <rect x="817" y="382" width="58" height="234" rx="29"/>
+      <rect x="899" y="325" width="58" height="348" rx="29"/>
+    </g>
+  </g>
+</svg>

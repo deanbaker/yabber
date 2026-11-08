@@ -1,5 +1,7 @@
 # Yabber
 
+<img src="Brand/web/yabber-wordmark.png" alt="Yabber" width="320">
+
 A personal, on-device iOS dictation keyboard (not for the App Store). The main app holds the
 microphone and runs Parakeet TDT v3 through [FluidAudio](https://github.com/FluidInference/FluidAudio)
 on the Neural Engine. A keyboard extension signals it over an App Group plus Darwin notifications and
