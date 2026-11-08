@@ -1,5 +1,0 @@
-// Shared settings. Put DEVELOPMENT_TEAM (and optionally PROBE_BUNDLE_ID) in Local.xcconfig,
-// which is git-ignored. scripts/probe.sh writes it for you.
-PROBE_BUNDLE_ID = com.deanbaker.wisprfree.probe
-
-#include? "Local.xcconfig"
