@@ -23,7 +23,8 @@ enum WF {
         case request = "request.json"
         case status = "status.json"
         case keyboard = "keyboard.json"
-        case log = "debug.log"
+        /// Under Library/ because devicectl can only copy App Group files from there.
+        case log = "Library/Caches/debug.log"
     }
 }
 
@@ -129,6 +130,8 @@ enum SharedLog {
         #endif
         queue.async {
             guard let url = WF.container?.appendingPathComponent(WF.File.log.rawValue) else { return }
+            try? FileManager.default.createDirectory(
+                at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
             let fd = open(url.path, O_WRONLY | O_APPEND | O_CREAT, 0o644)
             guard fd >= 0 else { return }
             defer { close(fd) }

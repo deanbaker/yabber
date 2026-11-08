@@ -51,7 +51,7 @@ case "${1:-}" in
   log)
     out=$(mktemp -d)
     xcrun devicectl device copy from --device "$dev" --domain-type appGroupDataContainer \
-      --domain-identifier "$GROUP_ID" --source debug.log --destination "$out/debug.log" >/dev/null
+      --domain-identifier "$GROUP_ID" --source Library/Caches/debug.log --destination "$out/debug.log" >/dev/null
     tail -n "${2:-60}" "$out/debug.log"
     rm -rf "${out:?}" ;;
   *)
