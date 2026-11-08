@@ -141,6 +141,10 @@ struct ContentView: View {
 }
 
 /// Shown when the keyboard opened the app to start a session.
+///
+/// Since iOS 26.4 the system no longer shows the "◀ <host app>" breadcrumb for a keyboard-initiated
+/// open, and there is no API to send the user back (developer.apple.com/forums/thread/826851).
+/// Swiping right along the home indicator always returns to the previous app, so that is the instruction.
 private struct ListeningOverlay: View {
     @EnvironmentObject private var service: DictationService
 
@@ -152,25 +156,54 @@ private struct ListeningOverlay: View {
                 .symbolEffect(.variableColor.iterative)
                 .foregroundStyle(.red)
             Text("Listening").font(.largeTitle.bold())
-            VStack(spacing: 8) {
-                Label("Swipe back to your app", systemImage: "arrow.uturn.backward")
-                    .font(.title3.weight(.semibold))
-                Text("Tap ◀︎ at the top left, or swipe right along the bottom edge. Keep talking, then tap stop on the keyboard.")
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.horizontal, 32)
+            Text("Keep talking. Go back to your app, then tap stop on the keyboard.")
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 32)
             Spacer()
             HStack(spacing: 16) {
                 Button("Cancel", role: .destructive) { service.handleCancel() }
                     .buttonStyle(.bordered)
                 Button("Stop here") { service.handleStop() }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.bordered)
             }
             .controlSize(.large)
-            .padding(.bottom, 40)
+            SwipeBackHint()
+                .padding(.bottom, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.regularMaterial)
+    }
+}
+
+/// A hand sliding right along a track just above the home indicator, mimicking the swipe-back gesture.
+private struct SwipeBackHint: View {
+    @State private var travelled = false
+
+    var body: some View {
+        VStack(spacing: 10) {
+            Text("Swipe right along the bottom edge to go back")
+                .font(.headline)
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(.secondary.opacity(0.25)).frame(height: 6)
+                    Image(systemName: "hand.point.up.left.fill")
+                        .font(.title)
+                        .foregroundStyle(.tint)
+                        .offset(x: travelled ? geo.size.width - 32 : 0, y: 14)
+                        .opacity(travelled ? 0.2 : 1)
+                }
+                .frame(maxHeight: .infinity, alignment: .top)
+            }
+            .frame(width: 180, height: 44)
+            Image(systemName: "arrow.down")
+                .foregroundStyle(.secondary)
+        }
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: false)) {
+                travelled = true
+            }
+        }
+        .accessibilityElement(children: .combine)
     }
 }
