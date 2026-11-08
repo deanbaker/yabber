@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build and run the WisprFree app + keyboard on the connected iPhone.
+# Build and run the Yabber app + keyboard on the connected iPhone.
 #   scripts/app.sh team <TEAM_ID>   write App/Config/Local.xcconfig
 #   scripts/app.sh build            generate project + signed build for the connected iPhone
 #   scripts/app.sh install          install on the iPhone
@@ -11,9 +11,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PROJ="$ROOT/App"
 DERIVED="$ROOT/build/AppDerivedData"
-APP="$DERIVED/Build/Products/Debug-iphoneos/WisprFree.app"
-BUNDLE_ID=com.deanbaker.wisprfree
-GROUP_ID=group.com.deanbaker.wisprfree
+APP="$DERIVED/Build/Products/Debug-iphoneos/Yabber.app"
+BUNDLE_ID=com.yabber-app.yabber
+GROUP_ID=group.com.yabber-app.yabber
 
 device() {
   if [[ -n "${DEVICE:-}" ]]; then echo "$DEVICE"; return; fi
@@ -40,7 +40,7 @@ case "${1:-}" in
     cat "$PROJ/Config/Local.xcconfig" ;;
   build)
     (cd "$PROJ" && xcodegen generate --quiet)
-    xcodebuild -project "$PROJ/WisprFree.xcodeproj" -scheme WisprFree \
+    xcodebuild -project "$PROJ/Yabber.xcodeproj" -scheme Yabber \
       -destination "id=$dev" -derivedDataPath "$DERIVED" \
       -allowProvisioningUpdates -allowProvisioningDeviceRegistration build \
       | grep -E "error:|warning: .*/App/|BUILD (SUCCEEDED|FAILED)" ;;

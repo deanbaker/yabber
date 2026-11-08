@@ -141,9 +141,9 @@ final class DictationService: ObservableObject {
 
     // MARK: - Keyboard commands
 
-    /// `wisprfree://dictate`: the keyboard couldn't reach a live session, so it opened us.
+    /// `yabber://dictate`: the keyboard couldn't reach a live session, so it opened us.
     func handleURL(_ url: URL) {
-        guard url.scheme == WF.urlScheme else { return }
+        guard url.scheme == YB.urlScheme else { return }
         SharedLog.write("app", "opened by URL \(url.absoluteString)")
         if url.host == "dictate" {
             openedFromKeyboard = true

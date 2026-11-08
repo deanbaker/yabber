@@ -5,10 +5,10 @@ import Foundation
 /// Signalling: Darwin notifications (no payload). Data: small JSON files in the App Group container.
 ///   keyboard → app: start, stop, cancel, ping   (current request id lives in request.json)
 ///   app → keyboard: status                       (state lives in status.json)
-enum WF {
-    static let appGroup = "group.com.deanbaker.wisprfree"
-    static let urlScheme = "wisprfree"
-    static let dictateURL = URL(string: "wisprfree://dictate")!
+enum YB {
+    static let appGroup = "group.com.yabber-app.yabber"
+    static let urlScheme = "yabber"
+    static let dictateURL = URL(string: "yabber://dictate")!
 
     static var container: URL? {
         FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
@@ -16,7 +16,7 @@ enum WF {
 
     enum Note: String, CaseIterable {
         case start, stop, cancel, ping, status
-        var name: String { "com.deanbaker.wisprfree." + rawValue }
+        var name: String { "com.yabber-app.yabber." + rawValue }
     }
 
     enum File: String {
@@ -58,11 +58,11 @@ struct KeyboardState: Codable {
 }
 
 enum SharedStore {
-    private static func url(_ file: WF.File) -> URL? {
-        WF.container?.appendingPathComponent(file.rawValue)
+    private static func url(_ file: YB.File) -> URL? {
+        YB.container?.appendingPathComponent(file.rawValue)
     }
 
-    static func write<T: Encodable>(_ value: T, to file: WF.File) {
+    static func write<T: Encodable>(_ value: T, to file: YB.File) {
         guard let url = url(file) else { return }
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .millisecondsSince1970
@@ -73,7 +73,7 @@ enum SharedStore {
         }
     }
 
-    static func read<T: Decodable>(_ type: T.Type, from file: WF.File) -> T? {
+    static func read<T: Decodable>(_ type: T.Type, from file: YB.File) -> T? {
         guard let url = url(file), let data = try? Data(contentsOf: url) else { return nil }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
@@ -88,11 +88,11 @@ final class DarwinCenter {
     private var handlers: [String: () -> Void] = [:]
     private let center = CFNotificationCenterGetDarwinNotifyCenter()
 
-    func post(_ note: WF.Note) {
+    func post(_ note: YB.Note) {
         CFNotificationCenterPostNotification(center, CFNotificationName(note.name as CFString), nil, nil, true)
     }
 
-    func observe(_ note: WF.Note, _ handler: @escaping () -> Void) {
+    func observe(_ note: YB.Note, _ handler: @escaping () -> Void) {
         let isNew = handlers[note.name] == nil
         handlers[note.name] = handler
         guard isNew else { return }
@@ -129,7 +129,7 @@ enum SharedLog {
         print(line, terminator: "")
         #endif
         queue.async {
-            guard let url = WF.container?.appendingPathComponent(WF.File.log.rawValue) else { return }
+            guard let url = YB.container?.appendingPathComponent(YB.File.log.rawValue) else { return }
             try? FileManager.default.createDirectory(
                 at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
             let fd = open(url.path, O_WRONLY | O_APPEND | O_CREAT, 0o644)

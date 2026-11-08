@@ -22,7 +22,7 @@ final class KeyboardViewController: UIInputViewController {
     private let cancelButton = UIButton(type: .system)
     private let spinner = UIActivityIndicatorView(style: .large)
     private let globeButton = UIButton(type: .system)
-    private let fullAccessMessage = "Turn on Allow Full Access: Settings → General → Keyboard → Keyboards → WisprFree"
+    private let fullAccessMessage = "Turn on Allow Full Access: Settings → General → Keyboard → Keyboards → Yabber"
 
     // MARK: - Lifecycle
 
@@ -92,7 +92,7 @@ final class KeyboardViewController: UIInputViewController {
             guard let self, self.mode == .transcribing, self.lastStatusAt < sentAt else { return }
             SharedLog.write("kbd", "no reply to stop")
             self.mode = .idle
-            self.message = "WisprFree didn't respond. Open it to recover the recording."
+            self.message = "Yabber didn't respond. Open it to recover the recording."
         }
     }
 
@@ -132,7 +132,7 @@ final class KeyboardViewController: UIInputViewController {
         var responder: UIResponder? = self
         while let current = responder {
             if let application = current as? UIApplication {
-                application.open(WF.dictateURL, options: [:]) { [weak self] success in
+                application.open(YB.dictateURL, options: [:]) { [weak self] success in
                     SharedLog.write("kbd", "open app via UIApplication: \(success)")
                     if !success { self?.openFailed() }
                 }
@@ -140,7 +140,7 @@ final class KeyboardViewController: UIInputViewController {
             }
             responder = current.next
         }
-        extensionContext?.open(WF.dictateURL) { [weak self] success in
+        extensionContext?.open(YB.dictateURL) { [weak self] success in
             SharedLog.write("kbd", "open app via extensionContext: \(success)")
             if !success { DispatchQueue.main.async { self?.openFailed() } }
         }
@@ -148,7 +148,7 @@ final class KeyboardViewController: UIInputViewController {
 
     private func openFailed() {
         mode = .idle
-        message = "Couldn't open WisprFree. Open it, tap Start session, then come back."
+        message = "Couldn't open Yabber. Open it, tap Start session, then come back."
     }
 
     // MARK: - Status
@@ -233,7 +233,7 @@ final class KeyboardViewController: UIInputViewController {
         case .connecting:
             spinner.startAnimating()
             cancelButton.isHidden = false
-            statusLabel.text = openedApp ? "Opening WisprFree… then swipe back" : "Connecting…"
+            statusLabel.text = openedApp ? "Opening Yabber… then swipe back" : "Connecting…"
             statusLabel.textColor = .secondaryLabel
         case .recording(let since):
             stopButton.isHidden = false

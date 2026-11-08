@@ -1,4 +1,4 @@
-name: WisprFree
+name: Yabber
 options:
   deploymentTarget:
     iOS: "18.0"
@@ -18,44 +18,44 @@ packages:
     url: https://github.com/FluidInference/FluidAudio
     exactVersion: 0.18.3
 targets:
-  WisprFree:
+  Yabber:
     type: application
     platform: iOS
-    sources: [WisprFree, Shared]
+    sources: [Yabber, Shared]
     dependencies:
       - package: FluidAudio
-      - target: WisprKeyboard
+      - target: YabberKeyboard
         embed: true
     entitlements:
-      path: WisprFree/WisprFree.entitlements
+      path: Yabber/Yabber.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.deanbaker.wisprfree]
+        com.apple.security.application-groups: [group.com.yabber-app.yabber]
     info:
-      path: WisprFree/Info.plist
+      path: Yabber/Info.plist
       properties:
-        CFBundleDisplayName: WisprFree
+        CFBundleDisplayName: Yabber
         UILaunchScreen: {}
         UIBackgroundModes: [audio]
-        NSMicrophoneUsageDescription: WisprFree listens while you dictate from its keyboard. Audio never leaves the phone.
+        NSMicrophoneUsageDescription: Yabber listens while you dictate from its keyboard. Audio never leaves the phone.
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         CFBundleURLTypes:
           - CFBundleURLName: $(PRODUCT_BUNDLE_IDENTIFIER)
-            CFBundleURLSchemes: [wisprfree]
+            CFBundleURLSchemes: [yabber]
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: $(WF_BUNDLE_ID)
-  WisprKeyboard:
+        PRODUCT_BUNDLE_IDENTIFIER: $(YB_BUNDLE_ID)
+  YabberKeyboard:
     type: app-extension
     platform: iOS
     sources: [Keyboard, Shared]
     entitlements:
-      path: Keyboard/WisprKeyboard.entitlements
+      path: Keyboard/YabberKeyboard.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.deanbaker.wisprfree]
+        com.apple.security.application-groups: [group.com.yabber-app.yabber]
     info:
       path: Keyboard/Info.plist
       properties:
-        CFBundleDisplayName: WisprFree
+        CFBundleDisplayName: Yabber
         NSExtension:
           NSExtensionPointIdentifier: com.apple.keyboard-service
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
@@ -66,4 +66,4 @@ targets:
             RequestsOpenAccess: true
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: $(WF_BUNDLE_ID).keyboard
+        PRODUCT_BUNDLE_IDENTIFIER: $(YB_BUNDLE_ID).keyboard

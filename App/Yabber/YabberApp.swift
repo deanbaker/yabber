@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct WisprFreeApp: App {
+struct YabberApp: App {
     @StateObject private var service = DictationService()
 
     var body: some Scene {
@@ -26,7 +26,7 @@ struct ContentView: View {
                 setupSection
                 historySection
             }
-            .navigationTitle("WisprFree")
+            .navigationTitle("Yabber")
         }
         .overlay {
             if service.openedFromKeyboard && service.status.phase == .recording {
@@ -93,9 +93,9 @@ struct ContentView: View {
     private var setupSection: some View {
         Section("Keyboard setup") {
             VStack(alignment: .leading, spacing: 6) {
-                Text("1. Settings → General → Keyboard → Keyboards → Add New Keyboard → WisprFree")
-                Text("2. Tap WisprFree in that list and turn on Allow Full Access (needed to talk to this app).")
-                Text("3. In any text field, hold the globe key and pick WisprFree.")
+                Text("1. Settings → General → Keyboard → Keyboards → Add New Keyboard → Yabber")
+                Text("2. Tap Yabber in that list and turn on Allow Full Access (needed to talk to this app).")
+                Text("3. In any text field, hold the globe key and pick Yabber.")
             }
             .font(.callout)
             Button("Open Settings") {

@@ -1,4 +1,4 @@
-# wispr-free
+# Yabber
 
 A personal, on-device iOS dictation keyboard (not for the App Store). The main app holds the
 microphone and runs Parakeet TDT v3 through [FluidAudio](https://github.com/FluidInference/FluidAudio)
@@ -7,7 +7,7 @@ inserts the text.
 
 ## How it works
 
-- **First mic tap:** the keyboard opens WisprFree, which starts a session and begins recording. Swipe
+- **First mic tap:** the keyboard opens Yabber, which starts a session and begins recording. Swipe
   right along the bottom edge to get back to your app, keep talking, and tap stop on the keyboard.
 - **During a session:** the mic stays on (orange dot) so later taps record without leaving your app.
   Between dictations the app keeps only the last 0.4 s of audio in memory, as a lead-in for the next
@@ -15,7 +15,7 @@ inserts the text.
 - **Auto-stop:** the session ends after a set time without a dictation: 5 min by default, adjustable
   from 1 to 30 min in the app. After that, the next tap opens the app again.
 
-Code: `App/WisprFree` (app), `App/Keyboard` (extension), `App/Shared/SharedIPC.swift` (the IPC contract).
+Code: `App/Yabber` (app), `App/Keyboard` (extension), `App/Shared/SharedIPC.swift` (the IPC contract).
 
 ## Build and install
 
@@ -29,7 +29,7 @@ scripts/app.sh install
 scripts/app.sh log 100          # shared app + keyboard debug log
 ```
 
-On the phone: Settings → General → Keyboard → Keyboards → Add New Keyboard → WisprFree, then turn on
+On the phone: Settings → General → Keyboard → Keyboards → Add New Keyboard → Yabber, then turn on
 **Allow Full Access** (needed to reach the App Group and to open the app).
 
 Launch with `scripts/app.sh launch`, or from the home screen. Don't use the Xcode debugger
