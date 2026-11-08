@@ -293,8 +293,8 @@ final class Probe: ObservableObject {
             let wers = rs.compactMap(\.wer)
             let wer = wers.isEmpty ? Double.nan : wers.reduce(0, +) / Double(wers.count)
             let bg = rs.allSatisfy(\.inBackground) ? "Y" : (rs.contains(where: \.inBackground) ? "~" : "N")
-            log(String(format: "%-14@ %@  %13.0f  %12.0f  %9.1f  %8.1f%%  %5d  %6.0f",
-                       round as NSString, bg, short, long, longRtfx, wer * 100, rs.count - ok.count,
+            log(round.padding(toLength: 14, withPad: " ", startingAt: 0) + String(format: " %@  %13.0f  %12.0f  %9.1f  %8.1f%%  %5d  %6.0f",
+                       bg, short, long, longRtfx, wer * 100, rs.count - ok.count,
                        rs.map(\.footprintMB).max() ?? 0))
         }
         log(String(format: "peak footprint %.0f MB, min available %.0f MB", peakFootprint, minAvailable))

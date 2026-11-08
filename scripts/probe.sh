@@ -27,7 +27,7 @@ device() {
   /usr/bin/python3 -I - "$json" <<'PY' || rc=$?
 import json, sys
 devs = json.load(open(sys.argv[1]))["result"]["devices"]
-phys = [d for d in devs if d.get("hardwareProperties", {}).get("reality") == "physical"
+phys = [d for d in devs if d.get("hardwareProperties", {}).get("reality") != "simulated"
         and d.get("hardwareProperties", {}).get("platform") == "iOS"]
 if not phys:
     sys.exit("No physical iPhone found. Connect it by USB and unlock it.")
@@ -37,7 +37,7 @@ PY
   return $rc
 }
 
-case "${1:-}" in install|run|pull) dev=$(device) ;; esac
+case "${1:-}" in install|run|pull) dev=$(device) ;; build) DEST="id=$(device)" ;; esac
 
 case "${1:-}" in
   team)
@@ -47,8 +47,8 @@ case "${1:-}" in
   build)
     (cd "$PROJ" && xcodegen generate --quiet)
     xcodebuild -project "$PROJ/BackgroundProbe.xcodeproj" -scheme BackgroundProbe \
-      -destination 'generic/platform=iOS' -derivedDataPath "$DERIVED" \
-      -allowProvisioningUpdates build | grep -E "error:|BUILD (SUCCEEDED|FAILED)" ;;
+      -destination "${DEST:-generic/platform=iOS}" -derivedDataPath "$DERIVED" \
+      -allowProvisioningUpdates -allowProvisioningDeviceRegistration build | grep -E "error:|BUILD (SUCCEEDED|FAILED)" ;;
   install)
     xcrun devicectl device install app --device "$dev" "$APP" ;;
   run)
